@@ -27,15 +27,15 @@ def jugada(a11):
 		global a12
 		if cont<minn:
 			minn=cont
-			for v in range (0,9):
-				a12[v]=a[v]				
+			
+			a12=a.copy()				
 	def max(cont,a):							
 		global maxx
 		global a12
 		if cont>maxx:
 			maxx=cont
-			for v in range (0,9):
-				a12[v]=a[v]		
+			
+			a12=a.copy()		
 	def evaluar():
 		global eva
 		eva=0
@@ -73,9 +73,9 @@ def jugada(a11):
 
 		while j<8:
 			
-			for v in range (0,9):
-				a2[v]=a1[v]
-				a10[v]=a1[v]
+			
+			a2=a1.copy()	
+			a10=a1.copy()	
 			p=(-1)
 			l=0
 			while l<9:
@@ -94,9 +94,9 @@ def jugada(a11):
 				
 			n=0
 			while n<7:
-				for v in range (0,9):
-					a3[v]=a2[v]
-					a10[v]=a2[v]
+				
+				a3=a2.copy()	
+				a10=a2.copy()	
 				p=(-1)
 				l=0
 				while l<9:
@@ -115,9 +115,9 @@ def jugada(a11):
 				m=0
 				while m<6:
 					
-					for v in range (0,9):
-						a4[v]=a3[v]
-						a10[v]=a3[v]
+					
+					a4=a3.copy()
+					a10=a3.copy()
 					p=(-1)
 					l=0
 					while l<9:
@@ -138,9 +138,9 @@ def jugada(a11):
 					while w<5:
 						
 						
-						for v in range (0,9):
-							a5[v]=a4[v]
-							a10[v]=a4[v]
+						
+						a5=a4.copy()
+						a10=a4.copy()
 						p=(-1)
 						l=0
 						while l<9:
@@ -169,9 +169,9 @@ def jugada(a11):
 						
 						
 						while f<4:
-							for v in range (0,9):
-								a6[v]=a5[v]
-								a10[v]=a5[v]
+							
+							a6=a5.copy()
+							a10=a5.copy()
 							
 							p=(-1)
 							l=0
@@ -202,9 +202,9 @@ def jugada(a11):
 							
 							
 							while g<3:
-								for v in range (0,9):
-									a7[v]=a6[v]
-									a10[v]=a6[v]
+								
+								a7=a6.copy()
+								a10=a6.copy()
 								p=(-1)
 								l=0
 								while l<9:
@@ -233,9 +233,9 @@ def jugada(a11):
 									eva=0
 								
 								while h<2:
-									for v in range (0,9):
-										a8[v]=a7[v]
-										a10[v]=a7[v]
+									
+									a8=a7.copy()
+									a10=a7.copy()
 									p=(-1)
 									l=0
 									while l<9:
@@ -261,8 +261,8 @@ def jugada(a11):
 										cont=cont+eva/1000
 										eva=0
 										h=2
-									for v in range (0,9):
-										a9[v]=a8[v]
+									
+									a9=a8.copy()
 									l=0
 									while l<9:
 										if a9[l]=="":
@@ -365,6 +365,10 @@ raiz=Tk()
 raiz.title("XOXOX")
 botones(a)
 raiz.mainloop()
+
+	
+
+
 
 	
 
