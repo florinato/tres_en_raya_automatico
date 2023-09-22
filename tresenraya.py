@@ -1,85 +1,79 @@
 import tkinter as tk
 
-mejor_posicion = None  
-mejor_puntuacion =10   
-puntuacion=0
+class JuegoTresEnRaya:
+    def __init__(self):
+        # Inicializar variables de clase
+        self.mejor_posicion = None
+        self.mejor_puntuacion = 10
+        self.puntuacion = 0
+        self.tablero = ["", "", "", "", "", "", "", "", ""]
+        # Iniciar la interfaz gráfica
+        self.iniciar_interfaz()
 
-# Función para evaluar el estado actual del tablero
-def evaluar(board, depth):
-    for (x, y, z) in [(0, 1, 2), (3, 4, 5), (6, 7, 8),  # rows
-                      (0, 3, 6), (1, 4, 7), (2, 5, 8),  # columns
-                      (0, 4, 8), (2, 4, 6)]:  # diagonals
-        if board[x] == board[y] == board[z] and board[x] != "":
-            return (10/ (1 ** depth) if board[x] == "X" else -10) / (10 ** depth)
-    return 0
+    def evaluar(self, board, depth):
+        # Evaluar el estado actual del tablero
+        for (x, y, z) in [(0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6)]:
+            if board[x] == board[y] == board[z] and board[x] != "":
+                return (10 / (1 ** depth) if board[x] == "X" else -10) / (10 ** depth)
+        return 0
 
-# Función Minimax
-def minimax(board, depth, maximizing):
-    global mejor_posicion, mejor_puntuacion, puntuacion  # Usar las variables globales
-    
-    score = evaluar(board, depth)
-    if score!=0 :
-        puntuacion += score  # Sumar la puntuación a la puntuación total
-        return
-    if "" not in board:
-        
-        return
+    def minimax(self, board, depth, maximizing):
+        # Implementar algoritmo minimax
+        score = self.evaluar(board, depth)
+        if score != 0:
+            self.puntuacion += score
+            return
+        if "" not in board:
+            return
+        for i in range(len(board)):
+            if board[i] == "":
+                new_board = board.copy()
+                new_board[i] = "X" if maximizing else "O"
+                self.minimax(new_board, depth + 1, not maximizing)
+                if depth == 1:
+                    if self.puntuacion < self.mejor_puntuacion:
+                        self.mejor_puntuacion = self.puntuacion
+                        self.mejor_posicion = new_board
+                    self.puntuacion = 0
 
-    for i in range(len(board)):
-        if board[i] == "":
-            new_board = board.copy()
-            new_board[i] = "X" if maximizing else "O"
-            #print(new_board,puntuacion)
-            minimax(new_board, depth + 1, not maximizing)  # Llamada recursiva
-            
-            if depth == 1:
-                #print(mejor_posicion,puntuacion)
-                if puntuacion < mejor_puntuacion:
-                    mejor_puntuacion = puntuacion
-                    mejor_posicion = new_board
-                puntuacion =0
-               
-                    
-                
-                
-def jugar(indice, tablero):
-    if tablero[indice] == "":
-        tablero[indice] = "X"
-        minimax(tablero, 1, False)
+    def jugar(self, indice):
+        # Realizar una jugada
+        if self.tablero[indice] == "":
+            self.tablero[indice] = "X"
+            self.minimax(self.tablero, 1, False)
 
-# Función para actualizar los botones en la interfaz
-def actualizar_botones(tablero):
-    for i in range(9):
-        botones[i].config(text=tablero[i])
+    def clic_boton(self, indice):
+        # Manejar el clic en un botón
+        self.mejor_posicion = None
+        self.mejor_puntuacion = 10
+        self.jugar(indice)
+        if self.mejor_posicion is not None:
+            self.tablero = self.mejor_posicion
+        self.actualizar_botones()
 
-# Función cuando se hace clic en un botón
-def clic_boton(indice):
-    global tablero, mejor_posicion, mejor_puntuacion
-    mejor_posicion = None  # Reiniciar la mejor posición
-    mejor_puntuacion = 10  # Reiniciar el mejor puntaje
-    
-    jugar(indice, tablero)
-    
-    if mejor_posicion is not None:
-        tablero = mejor_posicion
-    actualizar_botones(tablero)
-tablero = ["", "", "", "", "", "", "", "", ""]
-# Inicializar Tkinter
-raiz = tk.Tk()
-raiz.title("XOXOX")
+    def actualizar_botones(self):
+        # Actualizar el estado de los botones en la interfaz
+        for i in range(9):
+            self.botones[i].config(text=self.tablero[i])
 
-# Inicializar tablero y botones
+    def iniciar_interfaz(self):
+        # Iniciar la interfaz gráfica con Tkinter
+        self.raiz = tk.Tk()
+        self.raiz.title("XOXOX")
+        self.botones = []
+        for i in range(9):
+            boton = tk.Button(self.raiz, text="", width=3, bd=3, font=("Roboto Cn", 18), background="silver",
+                              command=lambda i=i: self.clic_boton(i))
+            boton.grid(row=i // 3 + 1, column=i % 3 + 1)
+            self.botones.append(boton)
+        self.raiz.mainloop()
 
-botones = []
 
-# Crear los 9 botones y agregarlos a la lista de botones
-for i in range(9):
-    boton = tk.Button(raiz, text="", width=3, bd=3, font=("Roboto Cn", 18), background="silver", command=lambda i=i: clic_boton(i))
-    boton.grid(row=i//3 + 1, column=i % 3 + 1)
-    botones.append(boton)
+if __name__ == "__main__":
+    # Iniciar el juego
+    juego = JuegoTresEnRaya()
 
-# Iniciar la ventana Tkinter
-raiz.mainloop()
+
 	
 
 
